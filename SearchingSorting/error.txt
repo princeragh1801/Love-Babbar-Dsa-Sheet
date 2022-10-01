@@ -1,0 +1,6 @@
+p.first 1
+p.second 5
+totalElements 5
+ans 1
+ans 3
+ans -1

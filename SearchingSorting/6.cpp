@@ -28,6 +28,7 @@ int main()
 // } Driver Code Ends
 
 // Naive Approach
+// Check for all the pairs
 // Time Complexity 0(n^2)
 bool findPair(int arr[], int size, int n){
     //code

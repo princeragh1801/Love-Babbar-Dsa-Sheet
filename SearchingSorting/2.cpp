@@ -9,6 +9,9 @@ using namespace std;
 class Solution{
 public:
 
+    // Iterate through whole array
+    // check
+    // Time Complexity 0(n)
 	vector<int> valueEqualToIndex(int arr[], int n) {
 	    // code here
         vector<int> ans;

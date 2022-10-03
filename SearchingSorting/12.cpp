@@ -13,9 +13,7 @@ public:
     {
         // Your code goes here
         long long ans = 0, i, j, x, s;
-        // unordered_set<int> s;
-        // sort(arr,arr+n);
-        map<int, int> m;
+   
         for (i = 0; i < n - 1; i++)
         {
 

@@ -86,7 +86,10 @@ int search(vector<int>& nums, int target) {
 
 // Approach - 2
 // Binary Search
+// If array is sorted 
 // Time Complexity 0(logn)
+
+// cyclic rototed array
 int search(vector<int>& nums, int target) {
     int n = nums.size();
     int low = 0, mid = 0, high = n-1;

@@ -1,4 +1,0 @@
-head->data 5
-head->data 2
-head->data 2
-head->data 4

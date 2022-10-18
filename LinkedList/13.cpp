@@ -97,94 +97,98 @@ struct Node
 
 class Solution{
   public:
+
+    void debugList(Node *head){
+        while(head){
+            cerr<<head->data<<" ";
+            head = head->next;
+        }
+        cerr<<endl;
+    }
     //Function to sort the given linked list using Merge Sort.
     // Overall time complexity 0(nlogn)
     
-    int isSorted(vector<ll> v, ll n){
-        fo(i,1,n){
-            if(v[i] < v[i-1]){
-                return 0;
-            }
+
+    Node *findMid(Node *head){
+        Node *slow = head;
+        Node *fast = head->next;
+        while(fast && fast->next){
+            fast = fast->next->next;
+            slow = slow->next;
         }
-        return 1;
+        return slow;
     }
-    
-    // Merging array
-    // Time 0(high-low)
-    // Space 0(high-low)
-    void merge(vector<ll> &v, ll low, ll mid, ll high){
-        ll i = low,j = mid+1;
-        vector<ll> aux(high+1-low);
-        ll k = 0;
-        // copying all the elements of v in aux in sorted order
-        while(i <= mid && j <= high){
-            if(v[i] > v[j]){
-                aux[k++] = v[j++];
+
+    Node *merge(Node *left, Node *right){
+
+        if(left == NULL){
+            return right;
+        }
+
+        if(right == NULL){
+            return left;
+        }
+        
+        Node *ans = new Node(0);
+        Node *ptr = ans;
+        while(left && right){
+            if(left->data <= right->data){
+                
+                ptr->next = left;
+                ptr = left;
+
+                left = left->next;
             }
             else{
-                aux[k++] = v[i++];
+                
+                ptr->next = right;
+                ptr = right;
+    
+                right = right->next;
             }
         }
-        while(i <= mid){
-            aux[k++] = v[i++];
+ 
+
+        while(left){
+            
+            ptr->next = left;
+            ptr = left;
+            
+            left = left->next;
         }
-        while(j <= high){
-            aux[k++] = v[j++];
+        while(right){
+           
+            ptr->next = right;
+            ptr = right;
+           
+            right = right->next;
         }
-      
-        j = 0;
-        fo(i,low,high+1){
-            v[i] = aux[j++];
-        }
+       ans = ans->next;
+       return ans;
     }
-    
-    void mergeSort1(vector<ll> &v, ll low, ll high){
-    
-        // Base case
-        if(low >= high){
-            return;
-        }
-    
-        // Defining mid
-        int mid = (low+high)/2;
-    
-        // Partitioning the array
-        // from low to mid
-        mergeSort1(v, low, mid);
-        
-        // from mid+1 to high
-        mergeSort1(v, mid+1, high);
-    
-        // Merge array
-        merge(v, low, mid, high);
-    
-        // This is for if got array sorted simply return
-        if(isSorted(v, v.size())){
-            return;
-        }
-    
-    }
-    // Try it without using vector/array
+
     Node* mergeSort(Node* head) {
         // your code here
-        vector<ll> v;
-         Node *temp = head;
-         while(temp){
-            v.push_back(temp->data);
-            temp = temp->next;
-         }
-         ll low = 0;
-         ll high = v.size()-1;
-        mergeSort1(v, low, high);
-        debug(v)
-        temp = head;
-        int i = 0;
-        while(temp){
-            temp->data = v[i++];
-            temp = temp->next;
+        if(!head || !head->next){
+            return head;
         }
-        return head;
+
+        Node *mid = findMid(head);
+
+        Node *left = head;
+        Node *right = mid->next;
+
+        mid->next = NULL;
+
+        left = mergeSort(left);
+        right = mergeSort(right);
+
+
+        Node * result = merge(left, right);
+        // debugList(result);
+        return result;
     }
+
 };
 
 

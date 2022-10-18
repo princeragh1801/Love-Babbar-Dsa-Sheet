@@ -27,105 +27,100 @@ void printList(struct node *node)
 }
 
 
-// } Driver Code Ends
-/*
-  Reverse a linked list
-  The input list will have at least one element  
-  Return the node which points to the head of the new LinkedList
-  Node is defined as 
-    struct node
-    {
-        int data;
-        struct node* next;
-    
-        node(int x){
-            data = x;
-            next = NULL;
-        }
-    
-    }*head;
-*/
-
 class Solution
 {
     public:
 
     // Approach - 1
     // Extra 0(N) space required
-    struct node *reverse1(struct node *head, int k)
-    {
-        // Complete this method
-        vector<int> v;
-        node *ptr = head;
-        while (ptr != NULL)
-        {
-            v.push_back(ptr->data);
-            ptr = ptr->next;
-        }
-        int x = 0;
-        while (x + k <= v.size())
-        {
+    // struct node *reverse1(struct node *head, int k)
+    // {
+    //     // Complete this method
+    //     vector<int> v;
+    //     node *ptr = head;
+    //     while (ptr != NULL)
+    //     {
+    //         v.push_back(ptr->data);
+    //         ptr = ptr->next;
+    //     }
+    //     int x = 0;
+    //     while (x + k <= v.size())
+    //     {
             
-            reverse(v.begin() + x, v.begin() + x + k);
-            // debug(v);
-            x += k;
-        }
-        if(x + k > v.size()-k){
-            reverse(v.begin()+x, v.end());
-        }
-        // debug(v)
-        ptr = head;
-        // reverse(v.end() - k + 1, v.end());
-        for (auto it : v)
-        {
-            ptr->data = it;
-            ptr = ptr->next;
-        }
-        return head;
-    }
+    //         reverse(v.begin() + x, v.begin() + x + k);
+    //         // debug(v);
+    //         x += k;
+    //     }
+    //     if(x + k > v.size()-k){
+    //         reverse(v.begin()+x, v.end());
+    //     }
+    //     // debug(v)
+    //     ptr = head;
+    //     // reverse(v.end() - k + 1, v.end());
+    //     for (auto it : v)
+    //     {
+    //         ptr->data = it;
+    //         ptr = ptr->next;
+    //     }
+    //     return head;
+    // }
 
 
 
-    struct node* reverseList(node *head, node*last)
-    {
-        // code here
-        // return head of reversed list
+    struct node *revs(node*head){
+        if(!head || !head->next){
+            return head;
+        }
         node *ptr = head;
         node *q = NULL;
-        node *r = head->next;
-
-        while(r != last){
+        node* r = head->next;
+        while(ptr){
             ptr->next = q;
             q = ptr;
             ptr = r;
-            r = r->next;
+            if(r){
+                r = r->next;
+            }
+            
         }
-        ptr->next = q;
-        q = ptr;
-        ptr = r;
         head = q;
-        return head;
+        return q;
     }
-    struct node *reverse2 (struct node *head, int k)
+    struct node *reverse(struct node *head, int k)
     { 
         // Complete this method
-        node *ptr = head;
-        int i = 0;
-        node *start = ptr;
-        node *end = ptr;
-        while(ptr != NULL){
-            i++;
-            if(i%k == 0){
-                reverseList(start, end);
-                start = ptr->next;
+        node *start = head;
+        node *end = head;
+        
+        node *prev = NULL;
+        while(start && end){
+            
+            int i = 1;
+            while(i < k && end){
+                end = end->next;
+                i++;
             }
-            end = ptr;
-            ptr = ptr->next;
+            node *temp = end;
+            if(end != NULL){
+                
+                temp = end->next;
+                end->next = NULL;
+            }
+            
+            
+            if(prev == NULL){
+                head = revs(start);
+            }
+            else{
+                prev->next = revs(start);
+            }
+            prev = start;
+            start = temp;
+            end = temp;
         }
-        if(i%k != 0){
-            reverseList(start, end);
-        }
+        // printList(head);
         return head;
+
     }
 };
 
@@ -171,7 +166,8 @@ int main(void)
         cin>>k;
         
         Solution ob;
-        head = ob.reverse2(head, k);
+        head = ob.reverse(head, k);
+        // head = ob.revev(head);
         printList(head);
     }
      

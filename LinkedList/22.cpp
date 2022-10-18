@@ -29,6 +29,7 @@ Node* flatten (Node* root);
 
 int main(void) {
 
+
 	int t;
 	cin>>t;
 	while(t--){
@@ -147,44 +148,57 @@ Node *flatten1(Node *root)
 }
 
 
+// This approach uses merging
+Node *merge(Node *left, Node *right){
+    if(!left){
+        return right;
+    }
+    if (!right)
+    {
+        return left;
+    }
+
+    Node *result = new Node(-1);
+    Node *ptr = result;
+
+    while(left && right){
+        if(left->data <= right->data){
+            ptr->bottom = left;
+            ptr = left;
+            left = left->bottom;
+        }
+        else{
+            ptr->bottom = right;
+            ptr = right;
+            right = right->bottom;
+        }
+    }
+    while(left){
+        ptr->bottom = left;
+        ptr = left;
+        left = left->bottom;
+    }
+
+    while(right){
+        ptr->bottom = right;
+        ptr = right;
+        right = right->bottom;
+    }
+    ptr->bottom = NULL;
+    result = result->bottom;
+    return result;
+    
+}
 Node *flatten(Node *root)
 {
    // Your code here
-    Node *ptr = root;
-    Node *q = root->next;
-    Node *r = root->next->next;
-    Node *prev = ptr;
-    while(q){
-        
-        ptr = ptr->bottom;
-        while(ptr){
-            if(ptr->data <= q->data){
-                prev = ptr;
-                ptr = ptr->bottom;
-            }
-            else{
+    Node *result = NULL;
 
-                Node *temp = new Node(q->data);
-                prev->bottom = temp;
-                temp->bottom = ptr;
-                prev = temp;
-                if(!q->bottom){
-                    break;
-                }
-                q = q->bottom;
-            }
-        }
-        if(ptr == NULL){
-            prev->bottom = q;
-            ptr = q;
-        }
-        q = r;
-        if(r != NULL){
-            r = r->next;
-        }
-        
+    while(root){
+        result = merge(result, root);
+        root = root->next;
     }
-    root->next = NULL;
-    return root;
+
+    return result;
 }
 

@@ -77,7 +77,12 @@ void printList(struct Node *head)
 /* Driver program to test above functions */
 int main()
 {
-
+    ios_base::sync_with_stdio(false);cin.tie(NULL);
+      #ifndef ONLINE_JUDGE
+       freopen("input.txt", "r", stdin);
+       freopen("error.txt", "w", stderr);
+       freopen("output.txt", "w", stdout);
+       #endif
 	/* Initialize lists as empty */
 	int t,a,delnode;
 	cin>>t;
@@ -141,55 +146,27 @@ void deleteNode(struct Node **head, int key)
 /* Function to reverse the linked list */
  void reverse(struct Node** head_ref)
 {
-
-// Your code goes here
-
-    Node *ptr = *head_ref;
-    Node *prev = *head_ref;
-    Node *post = ptr->next;
-    Node *head = NULL;
-    ptr->next = head;
-    prev = ptr;
-    ptr = post;
-    post = post->next;
-    head = prev;
-    while(ptr){
-        ptr->next = prev;
-        prev = ptr;
-
-            ptr = post;
-            post = post->next;
-    
-        if(post == NULL){
-            break;
-        }
+    if(!head_ref){
+        return;
     }
-    ptr->next = prev;
-    prev = ptr;
-    ptr = head;
-    ptr->next = prev;
-    *head_ref = prev;
-}
-
-
- void reverse(struct Node** head_ref)
-{
-
-// Your code goes here
-
+    
+    Node *temp = *head_ref;
+    while(temp->next != *head_ref){
+        temp = temp->next;
+    }
+    Node *last = temp;
+    Node *prev = last;
     Node *ptr = *head_ref;
-    Node *prev = NULL;
     Node *post = ptr->next;
- 
-    while(ptr){
+    do
+    {
         ptr->next = prev;
         prev = ptr;
-        if(post == NULL){
-            break;
-        }
         ptr = post;
         post = post->next;
-    }
-    // (*head_ref)->next = ptr;
-    (*head_ref) = ptr;
+    } while (post != last);
+    ptr->next = prev;
+    prev = ptr;
+    last->next = ptr;
+    *head_ref = last;
 }

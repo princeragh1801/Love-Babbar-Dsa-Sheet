@@ -121,19 +121,41 @@ class Solution
 	    // Code here
         int n = grid.size();
         int m = (grid[0].size());
-        vector<vector<int>> ans(grid);
+        vector<vector<int>> vist(n, vector<int>(m, 0));
+        vector<vector<int>> dist(n, vector<int>(m, 0));
 
-        int i,j,x,y;
-        for(i = 0; i < n; i++){
-            for(j = 0; j < m; j++){
-                if(ans[i][j] == 1){
-                    ans[i][j] = 0;
+
+        queue<pair<pair<int, int>, int>> q;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == 1){
+                    q.push({{i, j}, 0});
                 }
                 else{
-                    ans[i][j] = n;
+                    vist[i][j] = 0;
                 }
             }
         }
+
+        int delrow[] = {-1, 0, +1, 0};
+        int delcol[] = {0, +1, 0, -1};
+        while(!q.empty()){
+            int row = q.front().first.first;
+            int column = q.front().first.second;
+            int steps = q.front().second;
+            q.pop();
+            dist[row][column] = steps;
+
+            for(int i = 0; i < 4; i++){
+                int nrow = row + delrow[i];
+                int mcol = column + delcol[i];
+                if(nrow >= 0 && nrow < n && mcol >= 0 && mcol < m && vist[nrow][mcol] == 0){
+                    vist[nrow][mcol] = 1;
+                    q.push({{nrow, mcol}, steps+1});
+                }
+            }
+        }
+        return dist;
         
 	}
 };

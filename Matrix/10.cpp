@@ -1,8 +1,7 @@
-//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define fo(i, a, b) for(ll int i = a; i < b; i++)
+#define fo(i, a, b) for(int i = a; i < b; i++)
 #define mod 1000000007
 #define beg(x) x.begin(), x.end()
 #define yes cout<<"YES"<<endl
@@ -73,55 +72,43 @@ template<class T> void _print(unordered_set<T> s){
 
 /*********************** prince1801 ************************/
 
-
-// } Driver Code Ends
-// User function template for c++
-
-// Not done
-class Solution {
-  public:
-    int findMaxLen(string s) {
-        // code here
-        stack<int> st;
-        st.push(-1);
-       
-        int maxLen = 0;
-        for(int i = 0; i < s.length(); i++){
-            if(s[i] == '('){
-                st.push(i);
-            }
-            else{
-                st.pop();
-                if(!st.empty()){
-                    maxLen = max(maxLen, i - st.top());
-                }
-                else{
-                    st.push(i);
+// brute force approach
+// time 0(n^4)
+// space 0(1)
+int findMaxDiff(vector<vector<int>> Mat, int n){
+    int maxDiff = INT_MIN;
+    fo(i,0,n){
+        fo(j,0,n){
+            int x = Mat[i][j];
+            fo(k,i+1,n){
+                fo(l,j+1,n){
+                    int curr = Mat[k][l] - x;
+                    maxDiff = max(curr, maxDiff);
                 }
             }
         }
-    
-       return maxLen;
     }
-};
-
-//{ Driver Code Starts.
-int main() {
+    return maxDiff;
+}
+int main()
+{
     ios_base::sync_with_stdio(false);cin.tie(NULL);
-      #ifndef ONLINE_JUDGE
-       freopen("input.txt", "r", stdin);
-       freopen("error.txt", "w", stderr);
-       freopen("output.txt", "w", stdout);
-       #endif
-    int t;
-    cin >> t;
-    while (t--) {
-        string S;
-        cin >> S; 
-        Solution ob;
-        cout << ob.findMaxLen(S) << endl;
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("error.txt", "w", stderr);
+    freopen("output.txt", "w", stdout);
+    #endif
+    
+    int n;
+    cin>>n;
+    vector<vector<int>> Mat(n);
+    fo(i,0,n){
+        fo(j,0,n){
+            int x;
+            cin>>x;
+            Mat[i].push_back(x);
+        }
     }
+    cout<<findMaxDiff(Mat, n)<<endl;
     return 0;
 }
-
-// } Driver Code Ends

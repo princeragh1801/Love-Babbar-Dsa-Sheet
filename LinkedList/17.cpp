@@ -121,24 +121,29 @@ struct Node
 };
 */
 
+// Need to understand 
 /* Function to delete a given node from the list */
 void deleteNode(struct Node **head, int key)
 {
 
 // Your code goes here
-    Node *prev = *head;
-    Node *ptr = prev->next;
+    Node *ptr = *head;
+    Node *prev;
     if(head == NULL){
         return;
     }
     while (ptr)
     {
-        if(ptr->data == key){
-            prev->next = ptr->next;
-            return;
+        if(ptr->data != key){
+            prev = ptr;
+            ptr = ptr->next;
         }
-        prev = ptr;
-        ptr = ptr->next;
+        else{
+            prev->next = ptr->next;
+            delete ptr;
+            break;
+        }
+        
     }
     
 }
@@ -154,19 +159,15 @@ void deleteNode(struct Node **head, int key)
     while(temp->next != *head_ref){
         temp = temp->next;
     }
-    Node *last = temp;
-    Node *prev = last;
     Node *ptr = *head_ref;
-    Node *post = ptr->next;
-    do
-    {
+    Node *prev = NULL;
+    Node *post = NULL;
+    temp->next = NULL;
+    while(ptr){
+        post = ptr->next;
         ptr->next = prev;
-        prev = ptr;
         ptr = post;
-        post = post->next;
-    } while (post != last);
-    ptr->next = prev;
-    prev = ptr;
-    last->next = ptr;
-    *head_ref = last;
+    }
+    (*head_ref)->next = temp;
+    *head_ref = temp;
 }

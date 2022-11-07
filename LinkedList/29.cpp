@@ -23,33 +23,73 @@ struct Node {
 class Solution
 {
     public:
+
+    // brute force approach
+    // time 0(n)
+    // space 0(n)
+    Node *copyList1(Node *head)
+    {
+        //Write your code here
+        map<Node*, Node*> mp;
+        Node *ptr = head;
+        
+        while(ptr != NULL){
+            Node *temp = new Node(ptr->data);
+            mp[ptr] = temp;
+            ptr = ptr->next;
+        }
+        
+        ptr = head;
+        while (ptr != NULL)
+        {
+            mp[ptr]->next = mp[ptr->next];
+            mp[ptr]->arb = mp[ptr->arb];
+            ptr = ptr->next; 
+        }
+        ptr = mp[head];
+        return ptr;
+        
+    }
+
+    // Time 0(n)
+    // space 0(1)
     Node *copyList(Node *head)
     {
         //Write your code here
-        Node *result = new Node(-1);
-        Node *ptr = result;
-        Node *q = head;
-        while(q){
-            ptr->next = q;
-            ptr = q;
-            q = q->next;
+        
+        Node *itr = head;
+        Node *front = head;
+        // Step -1 here we create copy node point after each node
+        while(itr){
+            front = itr->next;
+            Node *temp = new Node(itr->data);
+            itr->next = temp;
+            temp->next = front;
+            itr = front;
         }
-        print(result);
-        result = result->next;
-        ptr = head;
-        Node *itr = result;
-        while(result){
-            q = head;
-            while(q != ptr->arb){
-                q = q->next;
+        itr = head;
+        // here we deal with the random pointer
+        while(itr){
+            if(itr->arb){
+                itr->next->arb = itr->arb->next;
             }
-            result->arb = q;
-            ptr = ptr->next;
-            result = result->next;
+            itr = itr->next->next;
         }
-        return itr;
-    }
 
+        itr = head;
+        Node *psuedohead = new Node(0);
+        Node *ptr = psuedohead;
+        // here we deal with next pointer
+        while(itr){
+            front = itr->next->next;
+            ptr->next = itr->next;
+            itr->next = front;
+            ptr = ptr->next;
+            itr = itr->next;
+        }
+        psuedohead = psuedohead->next;
+        return psuedohead;
+    }
 };
 
 //{ Driver Code Starts.

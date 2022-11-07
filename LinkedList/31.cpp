@@ -80,6 +80,44 @@ int main()
 
 
 //you have to complete this function
+
+node * partition(node *left, node *right){
+    int x = left->data;
+    node *ptr = left;
+    int cnt = 0;
+    while(ptr != right){
+        if(ptr->data <= x){
+            cnt++;
+        }
+        ptr = ptr->next;
+    }
+    ptr = left;
+    while(cnt > 1){
+        ptr = ptr->next;
+        cnt--;
+    }
+    node *mid = new node(x);
+    mid->next = ptr->next;
+    ptr->next = mid;
+    ptr = mid->next;
+    while(left != mid && ptr != right){
+        if(left->data > x && ptr->data <= x){
+            swap(left->data, ptr->data);
+            left = left->next;
+            ptr = ptr->next;
+        }
+        else if(left->data <= x){
+            left = left->next;
+        }
+        else if(ptr->data > x){
+            ptr = ptr->next;
+        }
+    }
+    return mid;
+}
 void quickSort(struct node **headRef) {
+    node *left = *headRef;
+    node *right = NULL;
+    node *mid = partition(left, right);
     
 }

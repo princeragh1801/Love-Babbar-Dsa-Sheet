@@ -9,11 +9,22 @@ class Solution{
     public:
     int setSetBit(int x, int y, int l, int r){
         // code here
-        if(x== y){return x;}
-        int m1 = (1 << (r-l+1))-1;
-        m1 = (m1<<(l-1));
-        m1 = (m1&y);
-        x = (x|m1);
+        if(x == y){
+            return x;
+        }
+        int mask;
+        if(r-l+1 == 32){
+            mask = ((1<<(r-l+1))-1);
+        } 
+        else{
+            mask = (1 << (r-l+1));
+        }
+        mask--;
+        mask = (mask<<(l-1));
+        mask = (mask&y);
+        x = (x|mask);
+        
+        
         return x;
     }
 };
